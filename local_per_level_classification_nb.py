@@ -4,7 +4,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from sklearn import metrics
 
-from utils import create_pipeline, evaluate
+from utils import create_pipeline_nb, evaluate
 
 seed = np.random.randint(0, 1000)
 
@@ -32,7 +32,7 @@ def plot_confusion_matrix(
 
 
 def main():
-    pipeline = create_pipeline()
+    pipeline = create_pipeline_nb()
 
     df = pl.read_csv("data/train.csv")
     test_df = pl.read_csv("data/test.csv")

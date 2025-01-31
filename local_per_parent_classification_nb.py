@@ -5,7 +5,7 @@ import numpy as np
 import polars as pl
 from sklearn import clone
 
-from utils import create_pipeline, evaluate, plot_confusion_matrix
+from utils import create_pipeline_nb, evaluate, plot_confusion_matrix
 
 seed = np.random.randint(0, 1000)
 
@@ -53,7 +53,7 @@ def train_hierarchy(
     for level, (filter_col, target_col) in enumerate(hierarchy):
         if level == 0:  # Root level
             X, y = current_df["text"].to_numpy(), current_df[target_col].to_numpy()
-            clf = clone(create_pipeline()).fit(X, y)
+            clf = clone(create_pipeline_nb()).fit(X, y)
             classifiers.append(clf)
         else:
             level_classifiers = {}
@@ -65,7 +65,7 @@ def train_hierarchy(
                 y = filtered_df[target_col].to_numpy()
 
                 if len(np.unique(y)) > 1:  # Only train if multiple classes exist
-                    clf = clone(create_pipeline()).fit(X, y)
+                    clf = clone(create_pipeline_nb()).fit(X, y)
                     level_classifiers[category.lower()] = clf
 
             classifiers.append(level_classifiers)

@@ -53,7 +53,7 @@ def evaluate(clf: BaseEstimator, X_test, y_test, label: Optional[str] = None):
     return pred
 
 
-def create_pipeline() -> Pipeline:
+def create_pipeline_nb() -> Pipeline:
     """Create base ML pipeline"""
     return Pipeline(
         [
