@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 from typing import Any, List, Optional, Tuple
 
 import matplotlib.pyplot as plt
@@ -88,16 +91,15 @@ def main():
     model = train_hierarchy(df, hierarchy)
     test_df = pl.read_csv("data/test.csv")
 
-    # What to predict
-    label = "cat3"
-    X_test = test_df["text"].to_numpy()
-    y_test = test_df[label].to_numpy()
-
-    # Make predictions and plot
-    evaluate(model, X_test, y_test, label)
-    preds = model.predict(X_test, label)
-    plot_confusion_matrix(y_test, preds, f"{label}confusion matrix")
-    plt.savefig("img/cm_local_per_parent_classification.png")
+    for category in df.select(pl.exclude("text")).columns:
+        X_test = test_df["text"].to_numpy()
+        y_test = test_df[category].to_numpy()
+        # Make predictions and plot
+        save_kwargs = {"name": "nb_per_parent", "category": category}
+        evaluate(model, X_test, y_test, category, **save_kwargs)
+        preds = model.predict(X_test, category)
+        plot_confusion_matrix(y_test, preds, f"{category}confusion matrix", category, "nb_per_parent")
+    
 
 
 if __name__ == "__main__":
